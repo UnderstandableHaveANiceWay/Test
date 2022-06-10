@@ -36,24 +36,28 @@ public class Task {
         Scanner scanner = new Scanner(new FileReader(FilePath));
         StringBuilder file = new StringBuilder(), line = new StringBuilder();
         while (scanner.hasNextLine()) {
-            if (scanner.nextLine().equals(UserName + ":")) {
+            line.append(scanner.nextLine() + "\n");
+            if (line.toString().equals(UserName + ":" + "\n")) {
                 file.append(UserName + ":" + "\n");
                 file.append(scanner.nextLine() + "\n");
                 file.append(scanner.nextLine() + "\n");
                 file.append(scanner.nextLine() + "\n");
                 do{
                     line.delete(0, line.length());
-                    if (scanner.hasNextLine()) line.append(scanner.nextLine());
-                    if (line.toString().contains("\t")) file.append(line + "\n");
+                    if (scanner.hasNextLine()) line.append(scanner.nextLine() + "\n");
+                    if (line.toString().contains("\t")) file.append(line);
                 }while (line.toString().contains("\t") && line.length() > 0);
+                System.out.println(file);
                 file.append("\t\tTask Title:\n");
                 file.append("\t\t\t" + TaskTitle + "\n");
                 file.append("\t\tTask Description:\n");
                 file.append("\t\t\t" + TaskDescription + "\n");
             }
-            if (scanner.hasNextLine()) file.append(scanner.nextLine() + "\n");
+            else {
+                file.append(line);
+                line.delete(0, line.length());
+            }
         }
-        System.out.println(file);
         FileWriter fw = new FileWriter(FilePath, false);
         fw.write(file.toString());
         scanner.close();
@@ -66,12 +70,12 @@ public class Task {
         StringBuilder line = new StringBuilder();
         while (scanner.hasNextLine()) {
             if (scanner.nextLine().equals(UserName + ":")) {
-                while (!scanner.nextLine().equals("Tasks:"));
-                while (scanner.hasNext()) {
+                while (!scanner.nextLine().equals("\tTasks:"));
+                while (scanner.hasNextLine()) {
                     line.delete(0, line.length());
                     line.append(scanner.nextLine());
                     if (!line.toString().contains("\t")) break;
-                    System.out.println(line);
+                    System.out.println(line.delete(0, 2));
                 }
             }
         }
